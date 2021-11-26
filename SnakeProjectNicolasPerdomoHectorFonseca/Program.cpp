@@ -1,6 +1,6 @@
 #include "ConsoleWriter.h"
 using utility::ConsoleWriter;
-
+bool gameOver;
 void program();
 
 int main()
@@ -11,8 +11,11 @@ int main()
 
 void program()
 {
-	ConsoleWriter ventana = ConsoleWriter();
-	ventana.setWindowSize(50, 50);
+	while (!gameOver) {
+		ConsoleWriter ventana = ConsoleWriter();
+		ventana.setWindowSize(200, 50);
 
-	ventana.drawRectangle(1, 1, 50, 50);
+		ventana.drawRectangle(20, 10, 70, 40);
+		ventana.clear();
+	}
 }
