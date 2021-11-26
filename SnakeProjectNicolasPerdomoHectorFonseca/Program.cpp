@@ -12,7 +12,7 @@ int main()
 void program()
 {
 	ConsoleWriter ventana = ConsoleWriter();
-	ventana.setWindowSize(50, 50);
-
-	ventana.drawRectangle(1, 1, 50, 50);
+	ventana.setWindowSize(200, 50);
+	ventana.drawRectangle(20, 10, 70, 40);
+	
 }
