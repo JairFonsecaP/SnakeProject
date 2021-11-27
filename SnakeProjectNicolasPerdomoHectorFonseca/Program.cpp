@@ -19,6 +19,7 @@ int main()
 
 void program()
 {
+
 		ConsoleWriter windowGame = ConsoleWriter();
 		windowGame.setCursorVisible(false);
 		//windowGame.setWindowSize(200, 50);
@@ -36,4 +37,5 @@ void program()
 		Console::pause();
 		windowGame.setCharacterAtPosition(appleX, appleY, /*254*/ ' ');
 	}
+
 }
