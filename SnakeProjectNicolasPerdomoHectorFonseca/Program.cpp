@@ -1,7 +1,15 @@
 #include "ConsoleWriter.h"
-using utility::ConsoleWriter;
+#include "Console.h"
+#include "Random.h"
+#include "Apple.h"
 
+using utility::Random;
+using utility::ConsoleWriter;
+using utility::Console;
+bool gameOver;
 void program();
+int appleX, appleY;
+int snakeX, snakeY;
 
 int main()
 {
@@ -11,10 +19,23 @@ int main()
 
 void program()
 {
-	ConsoleWriter ventana = ConsoleWriter();
-	ventana.setWindowSize(200, 50);
-	ventana.drawRectangle(20, 10, 70, 40);
 
+		ConsoleWriter windowGame = ConsoleWriter();
+		windowGame.setCursorVisible(false);
+		//windowGame.setWindowSize(200, 50);
+		windowGame.drawRectangle(10, 5, 100, 9);
+		windowGame.drawRectangle(10, 10, 100, 35);
+	while (true)
+	{
+		windowGame.setCursorPosition(0, 0);
+		COORD topLeft = { appleX, appleY };
+		COORD bottomRight = { appleX, appleY };
+		//windowGame.clearRegion(topLeft, bottomRight);
+		appleX = Random::getRandomInteger(10 + 1, 100 - 1);
+		appleY = Random::getRandomInteger(10 + 1, 35 - 1);
+		windowGame.setCharacterAtPosition( appleX, appleY , /*254*/ 64);
+		Console::pause();
+		windowGame.setCharacterAtPosition(appleX, appleY, /*254*/ ' ');
+	}
 
-	
 }
