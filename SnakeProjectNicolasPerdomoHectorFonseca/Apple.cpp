@@ -19,10 +19,10 @@ int Apple::getY()
 
 int Apple::setX()
 {
-	x = Random::getRandomInteger(10 + 1, 100 - 1);
+	return Random::getRandomInteger(10 + 1, 100 - 1);
 }
 
 int Apple::setY()
 {
-	y = Random::getRandomInteger(10 + 1, 100 - 1);
+	return Random::getRandomInteger(10 + 1, 100 - 1);
 }
