@@ -81,9 +81,15 @@ void Player::startElapsedTime()
 
 void Player::updateTimer() //Get the diference between initial time and now();
 {
-	int hour = elapsedTime.getHoursUntil(utility::Time::getNow());
-	int minute = elapsedTime.getMinutesUntil(utility::Time::getNow());
-	int second = elapsedTime.getSecondsUntil(utility::Time::getNow());
+	int hour = utility::Time::getHoursBetween(elapsedTime, utility::Time::getNow());
+	int minute = utility::Time::getMinutesBetween(elapsedTime, utility::Time::getNow());
+	int second = utility::Time::getSecondsBetween(elapsedTime,utility::Time::getNow());
+
+	if (minute >= 60)
+		minute = minute % 60;
+
+	if (second >= 60)
+		second = second % 60;
 
 	timer = utility::Time(hour, minute, second);
 }
