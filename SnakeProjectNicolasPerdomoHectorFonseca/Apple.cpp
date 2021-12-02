@@ -1,28 +1,42 @@
 #include "Apple.h"
+#include "Game.h"
 
 using utility::Random;
+using utility::Coordinate;
 
 Apple::Apple(char character)
-	:x(setX()), y(setY()), character(character)
+	:coordinate({ getPointRandom(Game::BorderLeft + 1, Game::BorderRight - 1) ,getPointRandom(Game::BorderTop + 1, Game::BorderBottom - 1) }), character(character)
+	//:x(getPointRandom(1, 50)), y(getPointRandom(4, 30)), character(character)
+{ }
+
+Coordinate Apple::getCoordinate()
 {
+	return coordinate;
 }
 
-int Apple::getX()
+char Apple::getCharacter()
 {
-	return x;
+	return character;
 }
 
-int Apple::getY()
+void Apple::update()
 {
-	return y;
+	setX();
+	setY();
 }
 
-int Apple::setX()
+void Apple::setX()
 {
-	return Random::getRandomInteger(10 + 1, 100 - 1);
+	coordinate = { getPointRandom(Game::BorderLeft + 1, Game::BorderRight - 1), coordinate.Y };
+	
 }
 
-int Apple::setY()
+void Apple::setY()
 {
-	return Random::getRandomInteger(10 + 1, 100 - 1);
+	coordinate = { coordinate.X, getPointRandom(Game::BorderTop + 1, Game::BorderBottom - 1) };
+}
+
+int Apple::getPointRandom(int min, int max)
+{
+	return Random::getRandomInteger(min, max);
 }
