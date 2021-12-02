@@ -38,8 +38,6 @@ public:
 	utility::Time getElapsedTime();
 	int getScore();
 	std::string getPlayerName();
-	int getCurrentSnakeLength();
-	int getMaxSnakeLength();
 	
 	void startElapsedTime();
 

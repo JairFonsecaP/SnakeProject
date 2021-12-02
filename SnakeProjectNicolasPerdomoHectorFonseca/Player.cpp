@@ -32,15 +32,7 @@ std::string Player::getPlayerName()
 	return playerName;
 }
 
-int Player::getCurrentSnakeLength()
-{
-	return currentSnakeLength;
-}
 
-int Player::getMaxSnakeLength()
-{
-	return maxSnakeLength;
-}
 
 
 
