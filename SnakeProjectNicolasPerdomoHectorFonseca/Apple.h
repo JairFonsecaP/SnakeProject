@@ -1,19 +1,25 @@
 #pragma once
 #include "Random.h"
+#include "Coordinate.h"
+//#include "Game.h"
+
 class Apple
 {
 private:
-	int x;
-	int y;
+	utility::Coordinate coordinate;
 	char character;
 
 public:
 	Apple(char character);
-	int getX();
-	int getY();
+
+	utility::Coordinate getCoordinate();
+	char getCharacter();
+
+	void update();
 
 private:
-	static int setX();
-	static int setY();
+	void setX();
+	void setY();
+	int getPointRandom(int min, int max);
 };
 
