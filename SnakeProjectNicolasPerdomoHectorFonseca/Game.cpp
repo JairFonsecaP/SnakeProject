@@ -3,8 +3,16 @@
 using std::vector;
 
 Game::Game()
-	:writer(), reader(), apple(64), snake(), gameOver(false)//, player()
-{ }
+	:
+	writer(), 
+	reader(), 
+	apple(64), 
+	snake(), 
+	gameOver(false), 
+	player(),
+	countApples(0),
+	levels{1,2,3,5,8,13,21}
+{  }
 
 void Game::start()
 {
@@ -35,29 +43,47 @@ void Game::displayInitialSnake()
 void Game::update()
 {
 	updateSnake();
-	Sleep(10);
+	Sleep(100/snake.getSpeed());
+	player.updateTimer();
+	player.timeScore();
 }
 
 void Game::updateApple()
 {
-	apple.update();
+	do
+	{
+		apple.randomizePosition();
+	} while (snakeHitSelf(apple.getCoordinate()));
 	writer.setCharacterAtPosition(apple.getCoordinate(), apple.getCharacter());
 }
-bool Game::isEating()
-{
-	return snake.getHead() == apple.getCoordinate();
-}
+
 void Game::updateSnake()
 {
+	writer.clearRegion(snake.getTail(), snake.getTail());
 	if (isEating())
 	{
+		countApples++;
+		if (countApples % 2 == 0 && snake.getSpeed() != levels[6])
+		{
+			int index;
+			for (short i = 0; i < 7; i++)
+			{
+				if (snake.getSpeed() == levels[i])
+				{
+					snake.setSpeed(levels[i + 1]);
+					break;
+				}
+			}
+
+		}
 		updateApple();
-		snake.updateEating();
+		snake.moveAndGrow();
+		player.incrementScore(1, snake.getSpeed());
 	}
 	else
 	{
-		snake.update();
-		keepOnPlaying();
+		snake.move();
+		gameOver = hasGameEnded();
 		if (gameOver)
 			return;
 	}
@@ -65,10 +91,11 @@ void Game::updateSnake()
 	writer.setCharacterAtPosition(snake.getHead(), 'O');
 	for (short i = 0; i < 7; i++)
 	{
-		snake.setDirection(turnSnake());
+		snake.setDirection(getNewSnakeDirection());
 		Sleep(10);
 	}
-	writer.clearRegion(snake.getTail(), snake.getTail());
+	writer.setCursorPosition(2, 2);
+	writer.writeLine(player.toString() + "  Length: " + std::to_string(snake.getLength()));
 }
 
 int Game::getBorderTop()
@@ -91,7 +118,7 @@ int Game::getBorderLeft()
 	return BorderLeft;
 }
 
-short Game::turnSnake()
+short Game::getNewSnakeDirection()
 {
 	if (reader.isShiftPressed())
 		writer.pause();
@@ -108,9 +135,30 @@ short Game::turnSnake()
 		return snake.getDirection();
 }
 
-void Game::keepOnPlaying()
+bool Game::hasGameEnded()
 {
-	char character = writer.getCharacterAtPosition(snake.getHead());
-	if (character != ' ' && snake.getHead() != apple.getCoordinate())
-		gameOver = true;
+	return snakeHitSelf(snake.getHead()) || snakeHitWall();
+}
+
+bool Game::snakeHitWall()
+{
+	utility::Coordinate head = snake.getHead();
+	return head.X <= BorderLeft || head.X >= BorderRight
+		|| head.Y <= BorderTop || head.Y >= BorderBottom;
+}
+
+bool Game::snakeHitSelf(COORD coordenate)
+{
+	std::vector<utility::Coordinate> bodyPoints = snake.getBodyPoints();
+	for (size_t i = 0; i < snake.getLength() - 1; i++)
+	{
+		if (bodyPoints[i] == coordenate)
+			return true;
+	}
+	return false;
+}
+
+bool Game::isEating()
+{
+	return snake.getHead() == apple.getCoordinate();
 }

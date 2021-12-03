@@ -8,52 +8,41 @@
 class Player
 {
 private: 
-	bool gameOver;
-
 	int level; 
+	int score;
+	utility::Time lastTime;
 
 	utility::Time timer;
 	utility::Time elapsedTime;
-	int score;
-
 	std::string playerName;
-
-	int currentSnakeLength;
-	int maxSnakeLength;
 
 	//private methods
 	void setLevel(int level);
+	void incrementScore(int amount);
 
 	//Tools
-	int alignCursorY(int top, int bottom);
-
+	int alignCursorY(int top, int bottom);//
+	static utility::Time startElapsedTime();
 public:
 	Player();
 
-	bool isGameOver();
-
 	int getLevel();
-	void incrementScore();
+	int getScore();
 
 	utility::Time getElapsedTime();
-	int getScore();
 	std::string getPlayerName();
-	
-	void startElapsedTime();
-
-	void setPlayerName(std::string playerName);
-
-	//updateMethods
-	void displayLevel(int left, int top, int right, int bottom);
-	void displayTimer(int left, int top, int right, int bottom);
-	void displayScore(int left, int top, int right, int bottom);
-	void updateTimer();
-
-	void incrementScore(int amount);
 	void incrementScore(int amount, float multiplier);
 
+	
+	//updateMethods
+	void setPlayerName(std::string playerName);
+	void displayLevel(int left, int top, int right, int bottom);//
+	void displayTimer(int left, int top, int right, int bottom);//
+	void displayScore(int left, int top, int right, int bottom);//
+	void updateTimer();
 	void timeScore();
+	void setScore();
 
-
+	std::string toString();
 };
 
