@@ -1,16 +1,15 @@
 #include "Player.h"
 using std::string;
+using utility::Time;
 
 Player::Player()
-	:gameOver(false), level(1), elapsedTime(0,0,0), timer(0,0,0), score(0), currentSnakeLength(10), maxSnakeLength(currentSnakeLength)
-{}
+	:level(1), elapsedTime(startElapsedTime() ), timer(0, 0, 0), score(0), playerName(""), lastTime(Time::getNow())
+{ 
+}
 
 
 //getters
-bool Player::isGameOver()
-{
-	return gameOver;
-}
+
 
 int Player::getLevel()
 {
@@ -32,67 +31,37 @@ std::string Player::getPlayerName()
 	return playerName;
 }
 
-
-
-
-
 //setters
 void Player::setPlayerName(std::string playerName)
 {
 	this->playerName = playerName;
 }
-
+/// <summary>
+/// 
+/// </summary>
+/// <param name="level"></param>
 void Player::setLevel(int level)
 {
 	this->level = level;
 }
 
 
-
 //on update
-void Player::displayLevel(int left, int top, int right, int bottom) //{x,y} where to clear the region and rewrite level and score values.
+Time Player::startElapsedTime()
 {
-	utility::ConsoleWriter writer;
-	writer.clearRegion(left,top,right,bottom);
-	writer.setCursorPosition(left+1, alignCursorY(top, bottom));
-	writer.writeLine(std::to_string(level));
-}
-
-void Player::displayScore(int left, int top, int right, int bottom)
-{
-	utility::ConsoleWriter writer;
-	writer.clearRegion(left, top, right, bottom);
-	writer.setCursorPosition(left+1, alignCursorY(top, bottom));
-	writer.writeLine(std::to_string(score));
-}
-
-void Player::startElapsedTime()
-{
-	elapsedTime = utility::Time(utility::Time::getNow()); //Get the time at the moment that this method is called.
+	return Time(Time::getNow()); //Get the time at the moment that this method is called.
 }
 
 void Player::updateTimer() //Get the diference between initial time and now();
 {
-	int hour = utility::Time::getHoursBetween(elapsedTime, utility::Time::getNow());
-	int minute = utility::Time::getMinutesBetween(elapsedTime, utility::Time::getNow());
-	int second = utility::Time::getSecondsBetween(elapsedTime,utility::Time::getNow());
-
-	if (minute >= 60)
-		minute = minute % 60;
-
-	if (second >= 60)
-		second = second % 60;
-
-	timer = utility::Time(hour, minute, second);
+	int seconds = Time::getSecondsBetween(elapsedTime,Time::getNow());
+	int hours = seconds / 3600;
+	seconds %= 3600;
+	int minutes = seconds / 60;
+	seconds %= 60;
+	timer = Time(hours, minutes, seconds);
 }
 
-void Player::displayTimer(int left, int top, int right, int bottom) //{x,y} where to clear the region and rewrite timer.
-{
-	utility::ConsoleWriter writer;
-	writer.clearRegion(left, top, right, bottom);
-	writer.setCursorPosition(left + 1, alignCursorY(top, bottom));
-	writer.writeLine(timer.toString());
-}
 
 void Player::incrementScore(int amount) //TO DO: o) When the snake eat an apple.
 {
@@ -105,8 +74,10 @@ void Player::incrementScore(int amount, float multiplier)
 
 void Player::timeScore() //Every second the score increase, THIS IS MULTIPLIED BY LEVEL vv
 {
-	score = (utility::Time::getSecondsBetween(utility::Time(0, 0, 0), timer))*level;
+	score += (Time::getSecondsBetween(lastTime, Time::getNow()));
+	lastTime = Time::getNow();
 }
+
 
 
 //Tools
@@ -115,4 +86,9 @@ int Player::alignCursorY(int top, int bottom) //align-text:center; (just in Y).
 	int alignY;
 	((top + bottom) % 2 == 0 ? alignY = (top + bottom)/2 : alignY = ((top+bottom)/2)-1); //Center cursor in Y. 
 	return alignY;
+}
+
+string Player::toString()
+{
+	return "Level: " + std::to_string(level) +  "  Score: " + std::to_string(score) + "  Time: " + timer.toString();
 }

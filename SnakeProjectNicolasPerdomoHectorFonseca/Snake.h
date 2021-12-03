@@ -12,7 +12,7 @@ public:
 
 private:
 	static const short initialLength = 10;
-
+	int speed; 
 	int length;
 	short headDirection;
 	short tailDirection;
@@ -30,9 +30,11 @@ public:
 	short getDirection();
 	int getLength();
 	std::vector <utility::Coordinate> getBodyPoints();
-	void update();
-	void updateEating();
+	void move();
+	void moveAndGrow();
 	void setDirection(short direction);
+	int getSpeed();
+	void setSpeed(int speed);
 
 private:
 	void stepHead();

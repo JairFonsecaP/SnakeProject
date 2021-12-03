@@ -6,6 +6,8 @@
 #include "Player.h"
 #include <vector>
 
+
+
 class Game
 {
 public:
@@ -13,14 +15,16 @@ public:
 	static int const BorderRight = 50;
 	static int const BorderBottom = 32;
 	static int const BorderLeft = 1;
-	
+
 private:
+	int countApples;
 	bool gameOver;
-	utility::ConsoleWriter writer;
-	utility::ConsoleReader reader;
 	Apple apple;
 	Snake snake;
-	//Player player;
+	Player player;
+	utility::ConsoleWriter writer;
+	utility::ConsoleReader reader;
+	int levels[7];
 
 public:
 	Game();
@@ -35,8 +39,12 @@ private:
 	void update();
 	void updateApple();
 	void updateSnake();
-	short turnSnake();
-	void keepOnPlaying();
+	short getNewSnakeDirection();
+
+	bool hasGameEnded();
+	bool snakeHitWall();
+	bool snakeHitSelf(COORD coordenate);
+
 	bool isEating();
 
 };

@@ -15,11 +15,10 @@ public:
 	utility::Coordinate getCoordinate();
 	char getCharacter();
 
-	void update();
+	void randomizePosition();
 
 private:
-	void setX();
-	void setY();
-	int getPointRandom(int min, int max);
+	static int getPointRandom(int min, int max);
+	static utility::Coordinate createCoordinate();
 };
 

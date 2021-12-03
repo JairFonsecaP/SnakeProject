@@ -4,8 +4,14 @@ using std::vector;
 using utility::Coordinate;
 
 Snake::Snake()
-	:length(initialLength), bodyPoints(getInitialSnake()), head({ 12,18 }), tail({0,0}), headDirection(goRight), tailDirection(1)
-	//:length(10), head({2,18 }), tail({ 12,18 }), direction(3)
+	:
+	length(initialLength),
+	bodyPoints(getInitialSnake()),
+	head({ 12,18 }),
+	tail({ 0,0 }),
+	headDirection(goRight),
+	tailDirection(1),
+	speed(1)
 {
 	 head = bodyPoints[bodyPoints.size() - 1];
 	 tail = bodyPoints[0];
@@ -35,12 +41,13 @@ vector<Coordinate> Snake::getBodyPoints()
 	return bodyPoints;
 }
 
-void Snake::update()
+void Snake::move()
 {
 	stepHead();
 	stepTail();
 }
-void Snake::updateEating()
+
+void Snake::moveAndGrow()
 {
 	stepHead();
 	length++;
@@ -49,6 +56,16 @@ void Snake::updateEating()
 void Snake::setDirection(short direction)
 {
 	this->headDirection = direction;
+}
+
+int Snake::getSpeed()
+{
+	return speed;
+}
+
+void Snake::setSpeed(int speed)
+{
+	this->speed = speed;
 }
 
 void Snake::stepHead()
