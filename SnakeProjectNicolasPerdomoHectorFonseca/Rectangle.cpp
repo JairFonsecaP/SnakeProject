@@ -29,4 +29,3 @@ int Rectangle::getSize()
 {
 	return getWidth() * getHeight();
 }
-

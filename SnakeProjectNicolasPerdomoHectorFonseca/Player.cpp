@@ -3,10 +3,18 @@ using std::string;
 using utility::Time;
 
 Player::Player()
-	:level(1), elapsedTime(startElapsedTime() ), timer(0, 0, 0), score(0), playerName(""), lastTime(Time::getNow())
-{ 
-}
+	:level(1), elapsedTime(startElapsedTime()), stopWatch(Time(0, 0, 0)), score(0), playerName(""), lastTime(Time::getNow())
+{ }
 
+
+void Player::restart()
+{
+	level = 1;
+	elapsedTime = startElapsedTime();
+	score = 0;
+	stopWatch = Time(0, 0, 0);
+	lastTime = Time::getNow();
+}
 
 //getters
 
@@ -59,23 +67,19 @@ void Player::updateTimer() //Get the diference between initial time and now();
 	seconds %= 3600;
 	int minutes = seconds / 60;
 	seconds %= 60;
-	timer = Time(hours, minutes, seconds);
+	stopWatch = Time(hours, minutes, seconds);
 }
 
 
-void Player::incrementScore(int amount) //TO DO: o) When the snake eat an apple.
+void Player::incrementScore() //TO DO: o) When the snake eat an apple.
 {
-	score += amount;
-}
-void Player::incrementScore(int amount, float multiplier)
-{
-	incrementScore(amount * multiplier);   //Overflow, note: (multiplier) could be replaced by (level).
+	score ++;
 }
 
 void Player::timeScore() //Every second the score increase, THIS IS MULTIPLIED BY LEVEL vv
 {
-	score += (Time::getSecondsBetween(lastTime, Time::getNow()));
-	lastTime = Time::getNow();
+	//score += (Time::getSecondsBetween(lastTime, Time::getNow()));
+	//lastTime = Time::getNow();
 }
 
 
@@ -90,5 +94,5 @@ int Player::alignCursorY(int top, int bottom) //align-text:center; (just in Y).
 
 string Player::toString()
 {
-	return "Level: " + std::to_string(level) +  "  Score: " + std::to_string(score) + "  Time: " + timer.toString();
+	return "Level: " + std::to_string(level) +  "  Score: " + std::to_string(score) + "  Time: " + stopWatch.toString();
 }
