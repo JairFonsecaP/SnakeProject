@@ -2,6 +2,7 @@
 #include "ConsoleWriter.h"
 #include "ConsoleReader.h"
 #include "ConsoleMenu.h"
+#include "Rectangle.h"
 #include "Apple.h"
 #include "Snake.h"
 #include "Player.h"
