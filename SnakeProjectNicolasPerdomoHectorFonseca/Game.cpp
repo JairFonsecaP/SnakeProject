@@ -1,28 +1,54 @@
 #include "Game.h"
+#include <iostream>
 
 using std::vector;
+using std::cin;
 
 Game::Game()
 	:
 	writer(), 
 	reader(), 
+	menu(),
 	apple(64), 
 	snake(), 
 	gameOver(false), 
 	player(),
-	countApples(0),
-	levels{1,2,3,5,8,13,21}
+	countApples(0)
 {  }
 
+Game::~Game()
+{
+	for (size_t i = 0; i < scores.size() - 1; i++)
+	{
+		delete scores.at(i);
+	}
+}
 void Game::start()
 {
-	displayBoard();
-	displayInitialSnake();
-	updateApple();
-	while (!gameOver)
-	{	
-		update();
-	}
+	bool play;
+	do {
+		writer.clear();
+		welcome();
+		writer.clear();
+		displayBoard();
+		displayInitialSnake();
+		updateApple();
+		while (!gameOver)
+		{
+			update();
+		}
+		scores.push_back(new Score(player.getPlayerName(), player.getScore(), player.getLevel()));
+		displayScores();
+		play = playAgain();
+	} while (play);
+}
+void Game::welcome()
+{
+	writer.clear();
+	writer.setCursorPosition({ 5,5 });
+	writer.writeLine("Welcome to snake game!");
+	writer.setCursorPosition({ 5,6 });
+	player.setPlayerName(reader.readWord("Please enter your name in one word"));
 }
 
 void Game::displayBoard()
@@ -43,7 +69,7 @@ void Game::displayInitialSnake()
 void Game::update()
 {
 	updateSnake();
-	Sleep(100/snake.getSpeed());
+	Sleep(45/snake.getSpeed());
 	player.updateTimer();
 	player.timeScore();
 }
@@ -63,22 +89,16 @@ void Game::updateSnake()
 	if (isEating())
 	{
 		countApples++;
-		if (countApples % 2 == 0 && snake.getSpeed() != levels[6])
+		if (countApples % 5 == 0 && snake.getSpeed() != 15)
 		{
-			int index;
-			for (short i = 0; i < 7; i++)
-			{
-				if (snake.getSpeed() == levels[i])
-				{
-					snake.setSpeed(levels[i + 1]);
-					break;
-				}
-			}
-
+			int level = player.getLevel();
+			level++;
+			player.setLevel(level);
+			snake.setSpeed(level);
 		}
 		updateApple();
 		snake.moveAndGrow();
-		player.incrementScore(1, snake.getSpeed());
+		player.incrementScore();
 	}
 	else
 	{
@@ -89,11 +109,7 @@ void Game::updateSnake()
 	}
 
 	writer.setCharacterAtPosition(snake.getHead(), 'O');
-	for (short i = 0; i < 7; i++)
-	{
-		snake.setDirection(getNewSnakeDirection());
-		Sleep(10);
-	}
+	setNewSnakeDirection();
 	writer.setCursorPosition(2, 2);
 	writer.writeLine(player.toString() + "  Length: " + std::to_string(snake.getLength()));
 }
@@ -117,12 +133,17 @@ int Game::getBorderLeft()
 {
 	return BorderLeft;
 }
+void Game::setNewSnakeDirection()
+{
+	for (short i = 0; i < 7; i++)
+	{
+		snake.setDirection(getNewSnakeDirection());
+		Sleep(45 / snake.getSpeed());
+	}
+}
 
 short Game::getNewSnakeDirection()
 {
-	if (reader.isShiftPressed())
-		writer.pause();
-
 	if (reader.isUpArrowPressed() && snake.getDirection() != Snake::goUp && snake.getDirection() != Snake::goDown)
 		return  Snake::goUp;
 	else if (reader.isRightArrowPressed() && snake.getDirection() != Snake::goLeft && snake.getDirection() != Snake::goRight)
@@ -161,4 +182,39 @@ bool Game::snakeHitSelf(COORD coordenate)
 bool Game::isEating()
 {
 	return snake.getHead() == apple.getCoordinate();
+}
+
+bool Game::playAgain()
+{
+	const int countOptions = 4;
+	char options[countOptions] = { 'Y', 'y', 'N', 'n' };
+	char response = reader.readCharacter("Do you want play again? y/n", options, 4);
+	if (response == 'Y' || response == 'y')
+	{
+		gameOver = false;
+		restart();
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+void Game::restart()
+{
+	snake.restart();
+	apple.restart();
+	player.restart();
+}
+
+void Game::displayScores()
+{
+	writer.clear();
+	Score::sortScores(scores);
+	menu.setTitle("SCORES");
+	vector<std::string>toDisplay = Score::scoresToString(scores);
+	menu.setOptions(toDisplay);
+	writer.setWindowSize(800, 600);
+	menu.displayMenu();
 }

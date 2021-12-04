@@ -12,10 +12,9 @@ public:
 
 private:
 	static const short initialLength = 10;
+
 	int speed; 
-	int length;
 	short headDirection;
-	short tailDirection;
 
 	utility::Coordinate head;
 	utility::Coordinate tail;
@@ -24,7 +23,7 @@ private:
 	
 public:
 	Snake();
-
+	void restart();
 	utility::Coordinate getHead();
 	utility::Coordinate getTail();
 	short getDirection();

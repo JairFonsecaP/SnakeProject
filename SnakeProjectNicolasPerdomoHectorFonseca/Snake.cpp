@@ -5,16 +5,23 @@ using utility::Coordinate;
 
 Snake::Snake()
 	:
-	length(initialLength),
 	bodyPoints(getInitialSnake()),
 	head({ 12,18 }),
 	tail({ 0,0 }),
 	headDirection(goRight),
-	tailDirection(1),
 	speed(1)
 {
 	 head = bodyPoints[bodyPoints.size() - 1];
 	 tail = bodyPoints[0];
+}
+
+void Snake::restart()
+{
+	bodyPoints = getInitialSnake();
+	head = bodyPoints[bodyPoints.size() - 1];
+	tail = bodyPoints[0];
+	headDirection = goRight;
+	speed = 1;
 }
 
 Coordinate Snake::getHead()
@@ -33,7 +40,7 @@ short Snake::getDirection()
 
 int Snake::getLength()
 {
-	return length;
+	return bodyPoints.size();
 }
 
 vector<Coordinate> Snake::getBodyPoints()
@@ -50,7 +57,6 @@ void Snake::move()
 void Snake::moveAndGrow()
 {
 	stepHead();
-	length++;
 }
 
 void Snake::setDirection(short direction)
@@ -84,26 +90,26 @@ void Snake::step(Coordinate* coordinate, short direction)
 {
 	switch (direction)
 	{
-	case goUp:
-	{
-		subtractOneToY(coordinate);
-		break;
-	}
-	case goRight:
-	{
-		addOneToX(coordinate);
-		break;
-	}
-	case goDown:
-	{
-		addOneToY(coordinate);
-		break;
-	}
-	case goLeft:
-	{
-		subtractOneToX(coordinate);
-		break;
-	}
+		case goUp:
+		{
+			subtractOneToY(coordinate);
+			break;
+		}
+		case goRight:
+		{
+			addOneToX(coordinate);
+			break;
+		}
+		case goDown:
+		{
+			addOneToY(coordinate);
+			break;
+		}
+		case goLeft:
+		{
+			subtractOneToX(coordinate);
+			break;
+		}
 	}
 }
 

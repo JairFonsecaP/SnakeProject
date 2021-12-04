@@ -1,9 +1,11 @@
 #pragma once
 #include "ConsoleWriter.h"
 #include "ConsoleReader.h"
+#include "ConsoleMenu.h"
 #include "Apple.h"
 #include "Snake.h"
 #include "Player.h"
+#include "Score.h"
 #include <vector>
 
 
@@ -24,28 +26,37 @@ private:
 	Player player;
 	utility::ConsoleWriter writer;
 	utility::ConsoleReader reader;
-	int levels[7];
+	utility::ConsoleMenu menu;
+	std::vector <Score*> scores;
 
 public:
 	Game();
+	~Game();
 	void start();
 	static int getBorderTop();
 	static int getBorderRight();
 	static int getBorderBottom();
 	static int getBorderLeft();
 private:
+	void welcome();
 	void displayBoard();
 	void displayInitialSnake();
 	void update();
 	void updateApple();
 	void updateSnake();
+
 	short getNewSnakeDirection();
+	void setNewSnakeDirection();
 
 	bool hasGameEnded();
 	bool snakeHitWall();
 	bool snakeHitSelf(COORD coordenate);
 
 	bool isEating();
+	bool playAgain();
+
+	void restart();
+	void displayScores();
 
 };
 

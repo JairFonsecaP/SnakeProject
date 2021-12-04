@@ -1,7 +1,7 @@
 #pragma once
 #include "Random.h"
 #include "Coordinate.h"
-//#include "Game.h"
+
 
 class Apple
 {
@@ -14,11 +14,10 @@ public:
 
 	utility::Coordinate getCoordinate();
 	char getCharacter();
-
 	void randomizePosition();
+	void restart();
 
 private:
-	static int getPointRandom(int min, int max);
 	static utility::Coordinate createCoordinate();
 };
 
