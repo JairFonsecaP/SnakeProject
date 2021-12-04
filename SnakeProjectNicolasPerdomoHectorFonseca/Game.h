@@ -25,10 +25,11 @@ private:
 	Apple apple;
 	Snake snake;
 	Player player;
+	std::vector <Score*> scores;
+
 	utility::ConsoleWriter writer;
 	utility::ConsoleReader reader;
 	utility::ConsoleMenu menu;
-	std::vector <Score*> scores;
 
 public:
 	Game();

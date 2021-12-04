@@ -171,7 +171,7 @@ bool Game::snakeHitWall()
 bool Game::snakeHitSelf(COORD coordenate)
 {
 	std::vector<utility::Coordinate> bodyPoints = snake.getBodyPoints();
-	for (size_t i = 0; i < snake.getLength(); i++)
+	for (size_t i = 0; i < snake.getLength() -1; i++)
 	{
 		if (bodyPoints[i] == coordenate)
 			return true;
