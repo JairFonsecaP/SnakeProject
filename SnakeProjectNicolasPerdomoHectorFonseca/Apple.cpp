@@ -25,8 +25,8 @@ char Apple::getCharacter()
 
 void Apple::randomizePosition()
 {
-	short x = Random::getRandomInteger(Game::BorderLeft + 1, Game::BorderRight - 1);
-	short y = Random::getRandomInteger(Game::BorderTop + 1, Game::BorderBottom - 1);
+	short x = Random::getRandomInteger(Map::BorderLeft + 1, Map::BorderRight - 1);
+	short y = Random::getRandomInteger(Map::BorderTop + 1, Map::BorderBottom - 1);
 	coordinate = { x, y };
 }
 
@@ -35,7 +35,7 @@ utility::Coordinate Apple::createCoordinate()
 {
 	return
 	{
-		Random::getRandomInteger(Game::BorderLeft + 1, Game::BorderRight - 1),
-		Random::getRandomInteger(Game::BorderTop + 1, Game::BorderBottom - 1)
+		Random::getRandomInteger(Map::BorderLeft + 1, Map::BorderRight - 1),
+		Random::getRandomInteger(Map::BorderTop + 1, Map::BorderBottom - 1)
 	};
 }
