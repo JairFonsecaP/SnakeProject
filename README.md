@@ -33,5 +33,5 @@ Enjoy the game!
 
 ## Authors
 
--   [Nicolas Perdomo]()
+-   [Nicolas Perdomo](https://nicolasperdomo.netlify.app/)
 -   [Hector Fonseca](https://hectorfonseca.dev)
